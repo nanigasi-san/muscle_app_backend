@@ -13,4 +13,4 @@ class Task(BaseModel):
 
 
 class TaskId(BaseModel):
-    id: int
+    id: str

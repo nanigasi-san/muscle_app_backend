@@ -2,7 +2,7 @@ import sqlite3
 import os
 from datetime import date
 from random import choice
-from models import Training, Task
+from models import Training, Task, TaskId
 
 
 def gen_id():
@@ -61,6 +61,11 @@ def add_task(task: Task):
         cur.execute("INSERT INTO TASK VALUES (?, ?, ?, ?, ?, ?)", (task.name, task.load, task.number, None, int(False), gen_id()))
 
 
+def mark_task_as_done(task_id: TaskId):
+    with MyCursur(DB_PATH) as cur:
+        cur.execute("UPDATE TASK SET done=? , task_date=? WHERE id=?", (int(True), date.today().strftime("%Y/%m/%d"), task_id))
+
+
 def list_done_task():
     with MyCursur(DB_PATH) as cur:
         cur.execute("SELECT * FROM TASK WHERE done=1")
@@ -82,5 +87,6 @@ ta1 = Task(name="unnko", load=85, number=30)
 add_task(ta1)
 ta2 = Task(name="tinko", load=120, number=30)
 add_task(ta2)
+mark_task_as_done("hogehogeid")
 print(list_done_task())
 print(list_undone_task())
